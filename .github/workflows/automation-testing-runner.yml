@@ -41,9 +41,10 @@ jobs:
           channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
           slack-message: |
             *Automation testing completed successfully.*
-            \n\nSelected apps: "${{ github.event.inputs.message }}"
-            Triggered by: ${{ github.actor }}
-            [View Workflow Run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            
+            *Selected apps:* "${{ github.event.inputs.message }}"
+            *Triggered by:* ${{ github.actor }}
+            <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Workflow Run>
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
@@ -54,8 +55,9 @@ jobs:
           channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
           slack-message: |
             *Automation testing failed!.*
-            \n\nSelected apps: "${{ github.event.inputs.message }}"
-            Triggered by: ${{ github.actor }}
-            [View Workflow Run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            
+            *Selected apps*: "${{ github.event.inputs.message }}"
+            *Triggered by*: ${{ github.actor }}
+            <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Workflow Run>
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
