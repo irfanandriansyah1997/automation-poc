@@ -1,4 +1,4 @@
-import type { Locator, Page } from '@playwright/test';
+import type { Locator, Page, Route } from '@playwright/test';
 
 import type { ElementType } from '@/types/test-case';
 
@@ -89,5 +89,18 @@ export abstract class AbstractTestCasePage<
     }
 
     throw new Error("Element name doesn't exist");
+  }
+
+  /**
+   * Mocks an API response for the given URL with the specified fulfillment parameters.
+   *
+   * @param {URL} url - The URL of the API request to intercept and mock.
+   * @param {Parameters<Route['fulfill']>[0]} args - The fulfillment parameters to mock the response.
+   * @returns {Promise<void>} A promise that resolves when the route is successfully set up.
+   */
+  public async mockAPI(url: URL, args: Parameters<Route['fulfill']>[0]) {
+    await this.page.route(url.toString(), (route) => {
+      route.fulfill(args);
+    });
   }
 }
