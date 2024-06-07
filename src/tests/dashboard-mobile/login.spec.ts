@@ -4,7 +4,7 @@ import DashboardLoginPage from '@/pages/dashboard-mobile/tescase/dashboard-login
 
 test.describe(
   'Testing login page should be working properly',
-  { tag: ['@mobile', '@login-page'] },
+  { tag: ['@dashboard-mobile', '@login-page'] },
   () => {
     test('Should be render correctly', async ({ page }) => {
       const instance = new DashboardLoginPage(page);

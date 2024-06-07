@@ -42,7 +42,8 @@
     "lint": "eslint .",
     "presetup": "yarn install",
     "setup": "husky install",
-    "test:mobile": "playwright test --project='Mobile Chrome' --grep @mobile",
+    "test:dashboard-mobile": "playwright test --project='Mobile Chrome' --grep @dashboard-mobile",
+    "test:payment-gateway": "playwright test --project='Mobile Chrome' --grep @payment-gateway",
     "type-check": "tsc --noEmit"
   },
   "version": "1.0.0"
