@@ -1,6 +1,6 @@
 import { test } from '@playwright/test';
 
-import DashboardLoginPage from '@/pages/dashboard-mobile/tescase/dashboard-login';
+import DashboardLoginPage from '@/pages/dashboard-mobile/testcase/dashboard-login';
 
 test.describe(
   'Testing login page should be working properly',
