@@ -1,9 +1,13 @@
 import type { Page } from '@playwright/test';
 
+interface BaseElementType {
+  parent?: ElementType;
+}
+
 /**
  * Interface representing an element located by alt text.
  */
-export interface ElementByAltTextType {
+export interface ElementByAltTextType extends BaseElementType {
   type: 'alt-text';
   value: {
     text: Parameters<Page['getByAltText']>[0];
@@ -14,7 +18,7 @@ export interface ElementByAltTextType {
 /**
  * Interface representing an element located by label text.
  */
-export interface ElementByLabelType {
+export interface ElementByLabelType extends BaseElementType {
   type: 'label';
   value: {
     text: Parameters<Page['getByLabel']>[0];
@@ -25,7 +29,7 @@ export interface ElementByLabelType {
 /**
  * Interface representing an element located by placeholder text.
  */
-export interface ElementByPlaceholderType {
+export interface ElementByPlaceholderType extends BaseElementType {
   type: 'placeholder';
   value: {
     text: Parameters<Page['getByPlaceholder']>[0];
@@ -36,7 +40,7 @@ export interface ElementByPlaceholderType {
 /**
  * Interface representing an element located by role.
  */
-export interface ElementByRoleType {
+export interface ElementByRoleType extends BaseElementType {
   type: 'role';
   value: {
     role: Parameters<Page['getByRole']>[0];
@@ -47,7 +51,7 @@ export interface ElementByRoleType {
 /**
  * Interface representing an element located by test ID.
  */
-export interface ElementByTestIdType {
+export interface ElementByTestIdType extends BaseElementType {
   type: 'test-id';
   value: { testId: string | RegExp };
 }
@@ -55,7 +59,7 @@ export interface ElementByTestIdType {
 /**
  * Interface representing an element located by text.
  */
-export interface ElementByTextType {
+export interface ElementByTextType extends BaseElementType {
   type: 'text';
   value: {
     text: Parameters<Page['getByText']>[0];
@@ -66,7 +70,7 @@ export interface ElementByTextType {
 /**
  * Interface representing an element located by title text.
  */
-export interface ElementByTitle {
+export interface ElementByTitle extends BaseElementType {
   type: 'title';
   value: {
     text: Parameters<Page['getByTitle']>[0];

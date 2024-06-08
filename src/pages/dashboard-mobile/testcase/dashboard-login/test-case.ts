@@ -4,19 +4,15 @@ import { expect } from '@playwright/test';
 import { dataMock_LoginAPI_accountNotFound } from '@/pages/dashboard-mobile/mocks/login-api.mock';
 import { AbstractTestCasePage } from '@/utils/test';
 
-import { DASHBOARD_LOGIN_PAGE_ELEMENTS } from './constant';
+import { DASHBOARD_LOGIN_PAGE_ELEMENTS, LOGIN_PAGE_URL } from './constant';
 
-/**
- * Class representing the Dashboard Login Page.
- * @extends AbstractTestCasePage
- */
 class DashboardLoginPage extends AbstractTestCasePage<
   typeof DASHBOARD_LOGIN_PAGE_ELEMENTS
 > {
   elements = DASHBOARD_LOGIN_PAGE_ELEMENTS;
 
   async goToDashboardLoginPage() {
-    await this.goTo('http://localhost:3000/v2/m/login', {
+    await this.goTo(LOGIN_PAGE_URL, {
       timeout: 15000,
       waitUntil: 'domcontentloaded'
     });
@@ -28,14 +24,11 @@ class DashboardLoginPage extends AbstractTestCasePage<
     const form = this.getElement('form');
     await expect(form).toBeVisible();
 
-    const textfieldContainer = this.getElement(
-      name === 'email textfield'
-        ? 'emailTextfieldContainer'
-        : 'passwordTextfieldContainer',
-      form
+    const textfield = this.getElement(
+      name === 'email textfield' ? 'emailTextfield' : 'passwordTextfield'
     );
-    const textfield = this.getElement('textfield', textfieldContainer);
     await expect(textfield).toBeVisible();
+
     return textfield;
   }
 
@@ -43,10 +36,7 @@ class DashboardLoginPage extends AbstractTestCasePage<
     /**
      * Check UI
      */
-    const form = this.getElement('form');
-    await expect(form).toBeVisible();
-
-    const title = this.getElement('title', form);
+    const title = this.getElement('title');
     await expect(title).toHaveText('Sign in with credentials');
 
     /**
@@ -60,6 +50,7 @@ class DashboardLoginPage extends AbstractTestCasePage<
     /**
      * Check Password Textfield
      */
+
     const passwordTextfield = await this.getTextfield('password textfield');
     await expect(passwordTextfield).toHaveAttribute('placeholder', 'Password');
     await expect(passwordTextfield).toHaveValue('');
@@ -67,25 +58,15 @@ class DashboardLoginPage extends AbstractTestCasePage<
     /**
      * Check Button
      */
-    const loginButton = form.getByRole('button', {
-      name: 'submit login'
-    });
+    const loginButton = this.getElement('loginButton');
     await expect(loginButton).toHaveText('Sign In');
   }
 
   async simulateLoginNegativeFlowEmptyForm() {
-    const form = this.getElement('form');
-    await expect(form).toBeVisible();
-
-    const title = this.getElement('title', form);
-    await expect(title).toHaveText('Sign in with credentials');
-
     /**
      * Check Button
      */
-    const loginButton = form.getByRole('button', {
-      name: 'submit login'
-    });
+    const loginButton = this.getElement('loginButton');
     await loginButton.click();
 
     const snackbar = this.getElement('snackbar');
@@ -94,10 +75,7 @@ class DashboardLoginPage extends AbstractTestCasePage<
   }
 
   async simulateLoginNegativeFlowInvalidEmailAddress() {
-    const form = this.getElement('form');
-    await expect(form).toBeVisible();
-
-    const title = this.getElement('title', form);
+    const title = this.getElement('title');
     await expect(title).toHaveText('Sign in with credentials');
 
     /**
@@ -110,9 +88,7 @@ class DashboardLoginPage extends AbstractTestCasePage<
     /**
      * Check Button
      */
-    const loginButton = form.getByRole('button', {
-      name: 'submit login'
-    });
+    const loginButton = this.getElement('loginButton');
     await loginButton.click();
 
     const snackbar = this.getElement('snackbar');
@@ -121,12 +97,6 @@ class DashboardLoginPage extends AbstractTestCasePage<
   }
 
   async simulateLoginNegativeFlowNotFilledPassword() {
-    const form = this.getElement('form');
-    await expect(form).toBeVisible();
-
-    const title = this.getElement('title', form);
-    await expect(title).toHaveText('Sign in with credentials');
-
     /**
      * Filled In Email Textfield
      */
@@ -137,9 +107,7 @@ class DashboardLoginPage extends AbstractTestCasePage<
     /**
      * Check Button
      */
-    const loginButton = form.getByRole('button', {
-      name: 'submit login'
-    });
+    const loginButton = this.getElement('loginButton');
     await loginButton.click();
 
     const snackbar = this.getElement('snackbar');
@@ -160,12 +128,6 @@ class DashboardLoginPage extends AbstractTestCasePage<
       }
     );
 
-    const form = this.getElement('form');
-    await expect(form).toBeVisible();
-
-    const title = this.getElement('title', form);
-    await expect(title).toHaveText('Sign in with credentials');
-
     /**
      * Filled In Email Textfield
      */
@@ -183,9 +145,7 @@ class DashboardLoginPage extends AbstractTestCasePage<
     /**
      * Check Button
      */
-    const loginButton = form.getByRole('button', {
-      name: 'submit login'
-    });
+    const loginButton = this.getElement('loginButton');
     await loginButton.click();
 
     const snackbar = this.getElement('snackbar');

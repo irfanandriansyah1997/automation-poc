@@ -37,6 +37,59 @@ export abstract class AbstractTestCasePage<
     await this.page.goto(...args);
   }
 
+  private _getElementByType(
+    element: ElementType,
+    selector: Locator | Page
+  ): Locator {
+    const { type, value } = element;
+
+    switch (type) {
+      case 'alt-text': {
+        const { options, text } = value;
+        return selector.getByAltText(text, options);
+      }
+
+      case 'label': {
+        const { options, text } = value;
+        return selector.getByLabel(text, options);
+      }
+
+      case 'placeholder': {
+        const { options, text } = value;
+        return selector.getByPlaceholder(text, options);
+      }
+
+      case 'role': {
+        const { options, role } = value;
+        return selector.getByRole(role, options);
+      }
+
+      case 'text': {
+        const { options, text } = value;
+        return selector.getByText(text, options);
+      }
+
+      case 'test-id': {
+        return selector.getByTestId(value.testId);
+      }
+
+      case 'title': {
+        const { options, text } = value;
+        return selector.getByTitle(text, options);
+      }
+    }
+  }
+
+  private _getElementParentByType(element: ElementType): ElementType[] {
+    const { parent } = element;
+
+    if (parent) {
+      return [...this._getElementParentByType(parent), parent];
+    }
+
+    return [];
+  }
+
   /**
    * Retrieves a Locator for an element by its name.
    *
@@ -48,44 +101,23 @@ export abstract class AbstractTestCasePage<
     const currentElement = this.elements[elementName];
 
     if (currentElement && currentElement.type && currentElement.value) {
-      const { type, value } = currentElement;
-      const selector = locator ? locator : this.page;
+      const { parent } = currentElement;
 
-      switch (type) {
-        case 'alt-text': {
-          const { options, text } = value;
-          return selector.getByAltText(text, options);
-        }
-
-        case 'label': {
-          const { options, text } = value;
-          return selector.getByLabel(text, options);
-        }
-
-        case 'placeholder': {
-          const { options, text } = value;
-          return selector.getByPlaceholder(text, options);
-        }
-
-        case 'role': {
-          const { options, role } = value;
-          return selector.getByRole(role, options);
-        }
-
-        case 'text': {
-          const { options, text } = value;
-          return selector.getByText(text, options);
-        }
-
-        case 'test-id': {
-          return selector.getByTestId(value.testId);
-        }
-
-        case 'title': {
-          const { options, text } = value;
-          return selector.getByTitle(text, options);
-        }
+      if (locator) {
+        return this._getElementByType(currentElement, locator);
       }
+
+      let selector: Locator | Page = this.page;
+      if (parent) {
+        selector = this._getElementParentByType(currentElement).reduce<
+          Page | Locator
+        >(
+          (result, current) => this._getElementByType(current, result),
+          this.page
+        );
+      }
+
+      return this._getElementByType(currentElement, selector);
     }
 
     throw new Error("Element name doesn't exist");
